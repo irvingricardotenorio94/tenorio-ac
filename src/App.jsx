@@ -1,159 +1,409 @@
-import React from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
-import { Phone, Clock, Wrench, Hammer, ArrowUpCircle, AlertCircle, Wind, Tag, HardHat, ClipboardCheck } from 'lucide-react';
+import { Phone, Clock, Wrench, Hammer, ArrowUpCircle, AlertCircle, Wind, Tag, HardHat, ClipboardCheck, ChevronLeft, ChevronRight, Facebook, Instagram, Mail, MapPin } from 'lucide-react';
+
+const heroImages = ['/img/1.jpeg', '/img/2.jpeg', '/img/4.jpeg'];
+const carouselImages = ['/img/1.jpeg', '/img/2.jpeg', '/img/3.jpeg', '/img/4.jpeg', '/img/5.jpeg', '/img/6.jpeg', '/img/7.jpeg', '/img/8.jpeg'];
 
 function App() {
   const { t, i18n } = useTranslation();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  const snowflakes = useMemo(() => {
+    // Use deterministic pseudo-random values based on index
+    const seed = (i) => {
+      const x = Math.sin(i) * 10000;
+      return x - Math.floor(x);
+    };
+    return Array.from({ length: 20 }).map((_, i) => ({
+      id: i,
+      left: seed(i) * 100,
+      animationDuration: 8 + seed(i + 10) * 7,
+      delay: seed(i + 20) * 5,
+      size: 1.5 + seed(i + 30) * 1.5,
+    }));
+  }, []);
+
+  const topBarSnowflakes = useMemo(() => {
+    // Use deterministic pseudo-random values based on index for top bar
+    const seed = (i) => {
+      const x = Math.sin(i + 100) * 10000;
+      return x - Math.floor(x);
+    };
+    return Array.from({ length: 15 }).map((_, i) => ({
+      id: `topbar-${i}`,
+      left: seed(i) * 100,
+      animationDuration: 5 + seed(i + 50) * 4,
+      delay: seed(i + 60) * 3,
+      size: 1 + seed(i + 70) * 1,
+    }));
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const nextCarouselImage = () => {
+    setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const prevCarouselImage = () => {
+    setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
 
+  const copyPhoneNumber = async () => {
+    const phoneNumber = '(480) 612-7134';
+    try {
+      await navigator.clipboard.writeText(phoneNumber);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy phone number:', err);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen" style={{ backgroundColor: '#F8F9FA' }}>
       {/* TOP BAR - We're Open 24/7 & Phone */}
-      <div className="fixed top-0 w-full h-[10vh] bg-gradient-to-r from-blue-600 to-blue-700 text-white z-50 px-8 flex justify-between items-center shadow-md">
-        <div className="flex items-center gap-3 font-bold text-2xl md:text-4xl italic transform translate-x-[5%]">
-          <Clock className="w-8 h-8 md:w-10 md:h-10" />
-          <span className="transform skew-x-[-12deg]">We're Open 24/7!</span>
+      <div className="fixed top-0 w-full h-[10vh] text-white z-50 shadow-md overflow-hidden" style={{ background: 'linear-gradient(to right, #0056b3, #0056b3)' }}>
+        {/* Snowflakes Animation - White */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          {topBarSnowflakes.map((flake) => (
+            <div
+              key={flake.id}
+              className="snowflake"
+              style={{
+                left: `${flake.left}%`,
+                animationDuration: `${flake.animationDuration}s`,
+                animationDelay: `${flake.delay}s`,
+                fontSize: `${flake.size}rem`,
+                color: 'white',
+                textShadow: '0 0 3px rgba(255, 255, 255, 0.8)',
+              }}
+            >
+              ❄
+            </div>
+          ))}
         </div>
-        <div className="flex items-center gap-3 font-semibold text-base md:text-xl">
-          <Phone className="w-5 h-5 md:w-6 md:h-6" />
-          <span>Cell: (480) 612-7134</span>
+        
+        <div className="relative z-10 px-8 h-full flex justify-between items-center">
+          <div className="flex items-center gap-6 font-bold text-2xl md:text-4xl italic transform translate-x-[5%]">
+            <Clock className="w-8 h-8 md:w-10 md:h-10" />
+            <span className="transform skew-x-[-12deg]">We're Open 24/7!</span>
+            {/* Location - Next to We're Open */}
+            <div className="flex items-center gap-2 font-semibold text-xs md:text-sm whitespace-nowrap ml-4">
+              <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+              <span className="hidden lg:inline">SERVING MESA, AZ & SURROUNDING AREAS</span>
+              <span className="hidden md:inline lg:hidden">MESA, AZ & AREAS</span>
+              <span className="md:hidden">MESA, AZ</span>
+            </div>
+          </div>
+          
+          {/* Social Media Icons - Right of center */}
+          <div className="absolute left-1/2 flex items-center gap-3" style={{ transform: 'translateX(calc(-50% + 35%))' }}>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
+              <Facebook className="w-5 h-5 md:w-6 md:h-6" />
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
+              <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </a>
+            <a href="mailto:info@tenorioac.com" className="hover:scale-110 transition">
+              <Mail className="w-5 h-5 md:w-6 md:h-6" />
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
+              <Instagram className="w-5 h-5 md:w-6 md:h-6" />
+            </a>
+          </div>
+          
+          <button
+            onClick={copyPhoneNumber}
+            className="flex items-center gap-3 font-bold text-2xl md:text-4xl italic px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 transition transform hover:scale-105 shadow-lg"
+          >
+            <Phone className="w-6 h-6 md:w-8 md:h-8" />
+            <span>Call Us: (480) 612-7134</span>
+            {copied && (
+              <span className="text-sm font-normal ml-2 animate-pulse">✓ Copied!</span>
+            )}
+          </button>
         </div>
       </div>
 
       {/* 1. NAVBAR */}
-      <nav className="fixed top-[10vh] w-full bg-white/80 backdrop-blur-md shadow-sm z-40 py-4 px-8 flex justify-between items-center">
-        <div className="text-2xl font-bold text-blue-600">TENORIO AC</div>
+      <nav className="fixed top-[10vh] w-full shadow-sm z-40 py-4 px-8 flex justify-between items-center bg-white">
+        <div className="flex items-center transform translate-x-[10%]">
+          <img src="/img/Logo.png" alt="Tenorio AC Logo" className="h-32 md:h-40 object-contain" />
+        </div>
         
-        <div className="flex items-center gap-6">
-          <div className="hidden md:flex gap-8 font-medium">
-            <a href="#inicio" className="hover:text-blue-500 transition">{t('nav_home')}</a>
-            <a href="#servicios" className="hover:text-blue-500 transition">{t('nav_services')}</a>
+        <div className="flex items-center gap-[10%] w-[30%] justify-end">
+          <div className="hidden md:flex gap-8 font-black text-lg tracking-wide uppercase">
+            <a href="#inicio" className="transition hover:scale-105 font-extrabold" style={{ color: '#343A40' }} onMouseEnter={(e) => e.target.style.color = '#0056b3'} onMouseLeave={(e) => e.target.style.color = '#343A40'}>{t('nav_home')}</a>
+            <a 
+              href="#servicios" 
+              className="transition hover:scale-105 font-extrabold" 
+              style={{ color: '#343A40' }} 
+              onMouseEnter={(e) => e.target.style.color = '#0056b3'} 
+              onMouseLeave={(e) => e.target.style.color = '#343A40'}
+              onClick={(e) => {
+                e.preventDefault();
+                const element = document.getElementById('servicios');
+                if (element) {
+                  const offset = window.innerHeight * 0.1 + 80; // 10vh + navbar height
+                  const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                  const offsetPosition = elementPosition - offset;
+                  window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                  });
+                }
+              }}
+            >
+              {t('nav_services')}
+            </a>
           </div>
 
           {/* BOTONES DE IDIOMA */}
-          <div className="flex bg-slate-100 rounded-lg p-1">
+          <div className="flex rounded-lg p-1.5" style={{ backgroundColor: 'rgba(248, 249, 250, 0.6)' }}>
             <button 
               onClick={() => changeLanguage('es')}
-              className={`px-3 py-1 rounded-md text-xs font-bold transition ${i18n.language.includes('es') ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500'}`}
+              className={`px-4 py-2 rounded-md text-sm font-black tracking-wider transition ${i18n.language.includes('es') ? 'shadow-md scale-105' : ''}`}
+              style={i18n.language.includes('es') ? { backgroundColor: 'white', color: '#0056b3' } : { color: '#343A40' }}
+              onMouseEnter={(e) => { if (!i18n.language.includes('es')) e.target.style.color = '#0056b3' }}
+              onMouseLeave={(e) => { if (!i18n.language.includes('es')) e.target.style.color = '#343A40' }}
             >
-              ES
+              Español
             </button>
             <button 
               onClick={() => changeLanguage('en')}
-              className={`px-3 py-1 rounded-md text-xs font-bold transition ${i18n.language.includes('en') ? 'bg-white shadow-sm text-blue-600' : 'text-slate-500'}`}
+              className={`px-4 py-2 rounded-md text-sm font-black tracking-wider transition ${i18n.language.includes('en') ? 'shadow-md scale-105' : ''}`}
+              style={i18n.language.includes('en') ? { backgroundColor: 'white', color: '#0056b3' } : { color: '#343A40' }}
+              onMouseEnter={(e) => { if (!i18n.language.includes('en')) e.target.style.color = '#0056b3' }}
+              onMouseLeave={(e) => { if (!i18n.language.includes('en')) e.target.style.color = '#343A40' }}
             >
-              EN
+              English
             </button>
           </div>
 
-          <a href="#citas" className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition text-sm font-bold">
+          <a href="#citas" className="px-8 py-3 rounded-full transition text-base font-black tracking-wide uppercase shadow-lg hover:shadow-xl hover:scale-105" style={{ backgroundColor: '#FFB800', color: '#343A40' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ffc933'} onMouseLeave={(e) => e.target.style.backgroundColor = '#FFB800'}>
             {t('nav_btn')}
           </a>
         </div>
       </nav>
 
       {/* 2. HERO SECTION */}
-      <header id="inicio" className="h-screen flex flex-col justify-center items-center text-center px-4 bg-gradient-to-b from-blue-50 to-white pt-[calc(10vh+80px)]">
-        <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6">
-          {t('hero_title')} <span className="text-blue-600">{t('hero_span')}</span>
-        </h1>
-        <p className="text-xl text-slate-600 max-w-2xl mb-10">
-          {t('hero_sub')}
-        </p>
-        <div className="flex gap-4">
-          <a href="#citas" className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-bold shadow-lg hover:shadow-blue-200 transition">
-            {t('btn_now')}
-          </a>
-          <a href="#servicios" className="border-2 border-slate-200 px-8 py-4 rounded-lg text-lg font-bold hover:bg-slate-50 transition">
-            {t('btn_view')}
-          </a>
+      <header id="inicio" className="h-screen flex flex-col justify-center items-center text-center px-4 pt-[calc(10vh+80px)] relative overflow-hidden">
+        {/* Background Images with Blur */}
+        <div className="absolute inset-0 z-0">
+          {heroImages.map((img, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+              }`}
+              style={{
+                backgroundImage: `url(${img})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                filter: 'blur(1px) brightness(0.95)',
+                transform: 'scale(1.1)',
+              }}
+            />
+          ))}
+        </div>
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-black/30 to-black/40"></div>
+        
+        {/* Content */}
+        <div className="relative z-20">
+          <h1 className="text-6xl md:text-8xl font-black text-white mb-6 uppercase tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+            {t('hero_title')} <span className="text-blue-300">{t('hero_span')}</span>
+          </h1>
+          <p className="text-2xl md:text-3xl text-white max-w-3xl mb-12 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mx-auto text-center">
+            {t('hero_sub')}
+          </p>
+          <div className="flex gap-6 justify-center">
+            <a href="#citas" className="px-10 py-5 rounded-lg text-xl font-bold shadow-2xl transition transform hover:scale-105 hover:shadow-xl" style={{ backgroundColor: '#FFB800', color: '#343A40' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ffc933'} onMouseLeave={(e) => e.target.style.backgroundColor = '#FFB800'}>
+              {t('btn_now')}
+            </a>
+            <a href="#servicios" className="border-3 border-white text-white px-10 py-5 rounded-lg text-xl font-bold hover:bg-white/20 transition bg-white/10 backdrop-blur-sm shadow-2xl">
+              {t('btn_view')}
+            </a>
+          </div>
         </div>
       </header>
 
       {/* 3. SERVICIOS */}
-      <section id="servicios" className="py-24 px-8 bg-white">
-        <h2 className="text-3xl font-bold text-center mb-4">{t('s_title')}</h2>
-        <p className="text-center text-slate-600 mb-16 max-w-3xl mx-auto">
-          {t('s_subtitle')}
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+      <section id="servicios" className="py-24 px-8 relative overflow-hidden scroll-mt-[calc(10vh+80px)]" style={{ backgroundColor: '#F8F9FA' }}>
+        {/* Snowflakes Animation */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          {snowflakes.map((flake) => (
+            <div
+              key={flake.id}
+              className="snowflake"
+              style={{
+                left: `${flake.left}%`,
+                animationDuration: `${flake.animationDuration}s`,
+                animationDelay: `${flake.delay}s`,
+                fontSize: `${flake.size}rem`,
+              }}
+            >
+              ❄
+            </div>
+          ))}
+        </div>
+        
+        <div className="relative z-10">
+          <h2 className="text-3xl font-bold text-center mb-4" style={{ color: '#343A40' }}>{t('s_title')}</h2>
+          <p className="text-center mb-16 max-w-3xl mx-auto" style={{ color: '#343A40' }}>
+            {t('s_subtitle')}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {/* Card 1 - System Installation */}
           <div className="p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl transition group">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition" style={{ backgroundColor: 'rgba(0, 86, 179, 0.1)', color: '#0056b3' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0056b3'; e.currentTarget.style.color = 'white' }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0, 86, 179, 0.1)'; e.currentTarget.style.color = '#0056b3' }}>
               <Hammer className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold mb-3">{t('s_inst')}</h3>
-            <p className="text-slate-600">{t('s_inst_desc')}</p>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#343A40' }}>{t('s_inst')}</h3>
+            <p style={{ color: '#343A40' }}>{t('s_inst_desc')}</p>
           </div>
           {/* Card 2 - Reliable Repairs */}
           <div className="p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl transition group">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition" style={{ backgroundColor: 'rgba(0, 86, 179, 0.1)', color: '#0056b3' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0056b3'; e.currentTarget.style.color = 'white' }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0, 86, 179, 0.1)'; e.currentTarget.style.color = '#0056b3' }}>
               <ClipboardCheck className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold mb-3">{t('s_rep')}</h3>
-            <p className="text-slate-600">{t('s_rep_desc')}</p>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#343A40' }}>{t('s_rep')}</h3>
+            <p style={{ color: '#343A40' }}>{t('s_rep_desc')}</p>
           </div>
           {/* Card 3 - Upgrade Consultation */}
           <div className="p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl transition group">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition" style={{ backgroundColor: 'rgba(0, 86, 179, 0.1)', color: '#0056b3' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0056b3'; e.currentTarget.style.color = 'white' }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0, 86, 179, 0.1)'; e.currentTarget.style.color = '#0056b3' }}>
               <ArrowUpCircle className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold mb-3">{t('s_upgrade')}</h3>
-            <p className="text-slate-600">{t('s_upgrade_desc')}</p>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#343A40' }}>{t('s_upgrade')}</h3>
+            <p style={{ color: '#343A40' }}>{t('s_upgrade_desc')}</p>
           </div>
           {/* Card 4 - Routine Maintenance */}
           <div className="p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl transition group">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition" style={{ backgroundColor: 'rgba(0, 86, 179, 0.1)', color: '#0056b3' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0056b3'; e.currentTarget.style.color = 'white' }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0, 86, 179, 0.1)'; e.currentTarget.style.color = '#0056b3' }}>
               <Wrench className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold mb-3">{t('s_maint')}</h3>
-            <p className="text-slate-600">{t('s_maint_desc')}</p>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#343A40' }}>{t('s_maint')}</h3>
+            <p style={{ color: '#343A40' }}>{t('s_maint_desc')}</p>
           </div>
           {/* Card 5 - Emergency Service */}
           <div className="p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl transition group">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition relative">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition relative" style={{ backgroundColor: 'rgba(0, 86, 179, 0.1)', color: '#0056b3' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0056b3'; e.currentTarget.style.color = 'white' }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0, 86, 179, 0.1)'; e.currentTarget.style.color = '#0056b3' }}>
               <Phone className="w-6 h-6" />
               <AlertCircle className="w-3 h-3 absolute top-0 right-0 text-red-500" />
             </div>
-            <h3 className="text-xl font-bold mb-3">{t('s_emergency')}</h3>
-            <p className="text-slate-600">{t('s_emergency_desc')}</p>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#343A40' }}>{t('s_emergency')}</h3>
+            <p style={{ color: '#343A40' }}>{t('s_emergency_desc')}</p>
           </div>
           {/* Card 6 - Ducting */}
           <div className="p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl transition group">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition" style={{ backgroundColor: 'rgba(0, 86, 179, 0.1)', color: '#0056b3' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0056b3'; e.currentTarget.style.color = 'white' }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0, 86, 179, 0.1)'; e.currentTarget.style.color = '#0056b3' }}>
               <Wind className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold mb-3">{t('s_ducting')}</h3>
-            <p className="text-slate-600">{t('s_ducting_desc')}</p>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#343A40' }}>{t('s_ducting')}</h3>
+            <p style={{ color: '#343A40' }}>{t('s_ducting_desc')}</p>
           </div>
           {/* Card 7 - Sales */}
           <div className="p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl transition group">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition" style={{ backgroundColor: 'rgba(0, 86, 179, 0.1)', color: '#0056b3' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0056b3'; e.currentTarget.style.color = 'white' }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0, 86, 179, 0.1)'; e.currentTarget.style.color = '#0056b3' }}>
               <Tag className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold mb-3">{t('s_sales')}</h3>
-            <p className="text-slate-600">{t('s_sales_desc')}</p>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#343A40' }}>{t('s_sales')}</h3>
+            <p style={{ color: '#343A40' }}>{t('s_sales_desc')}</p>
           </div>
           {/* Card 8 - New Construction & Renovations */}
           <div className="p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl transition group">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition">
+            <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition" style={{ backgroundColor: 'rgba(0, 86, 179, 0.1)', color: '#0056b3' }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#0056b3'; e.currentTarget.style.color = 'white' }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'rgba(0, 86, 179, 0.1)'; e.currentTarget.style.color = '#0056b3' }}>
               <HardHat className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold mb-3">{t('s_construction')}</h3>
-            <p className="text-slate-600">{t('s_construction_desc')}</p>
+            <h3 className="text-xl font-bold mb-3" style={{ color: '#343A40' }}>{t('s_construction')}</h3>
+            <p style={{ color: '#343A40' }}>{t('s_construction_desc')}</p>
+          </div>
           </div>
         </div>
       </section>
 
       {/* 4. SECCIÓN DE CITAS */}
-      <section id="citas" className="py-24 px-8 bg-slate-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">{t('nav_btn')}</h2>
-          <div className="bg-white p-8 rounded-3xl shadow-inner min-h-[400px] flex items-center justify-center border-2 border-dashed border-slate-200">
-             <p className="text-slate-400 font-medium">Calendario próximamente...</p>
+      <section id="citas" className="py-24 px-8" style={{ backgroundColor: '#F8F9FA' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-30 lg:gap-42 items-center">
+            {/* Sección de Citas - Izquierda */}
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl font-bold mb-6" style={{ color: '#343A40' }}>{t('nav_btn')}</h2>
+              <div className="bg-white p-8 rounded-3xl shadow-inner min-h-[400px] flex items-center justify-center border-2 border-dashed border-slate-200">
+                <p className="text-slate-400 font-medium">Calendario próximamente...</p>
+              </div>
+            </div>
+
+            {/* Carrusel de Imágenes - Derecha */}
+            <div className="relative aspect-[1.6] w-full">
+              {/* Botón Anterior */}
+              <button
+                onClick={prevCarouselImage}
+                className="absolute top-1/2 left-4 z-10 flex size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/90 p-2 text-slate-700 shadow-lg backdrop-blur-sm hover:bg-white transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                aria-label="Previous image"
+              >
+                <ChevronLeft className="size-5" />
+              </button>
+
+              {/* Botón Siguiente */}
+              <button
+                onClick={nextCarouselImage}
+                className="absolute top-1/2 right-4 z-10 flex size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/90 p-2 text-slate-700 shadow-lg backdrop-blur-sm hover:bg-white transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                aria-label="Next image"
+              >
+                <ChevronRight className="size-5" />
+              </button>
+
+              {/* Indicadores */}
+              <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 flex gap-2">
+                {carouselImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCarouselIndex(index)}
+                    className={`h-2 rounded-full transition-all ${
+                      index === carouselIndex
+                        ? 'w-8 bg-white'
+                        : 'w-2 bg-white/50 hover:bg-white/75'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+
+              {/* Contenido del Carrusel */}
+              <div className="relative w-full h-full overflow-hidden rounded-xl">
+                {carouselImages.map((img, index) => (
+                  <div
+                    key={index}
+                    className={`absolute inset-0 transition-opacity duration-500 ${
+                      index === carouselIndex ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`AC service image ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
