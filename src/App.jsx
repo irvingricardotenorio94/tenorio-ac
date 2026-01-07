@@ -144,13 +144,12 @@ function App() {
     }
 
     try {
-      // Configuración de EmailJS
-      // IMPORTANTE: Necesitas reemplazar estos valores con tus credenciales de EmailJS
-      // Puedes obtenerlas en https://www.emailjs.com/
-      const serviceId = 'YOUR_SERVICE_ID'; // Reemplaza con tu Service ID
-      const templateId = 'YOUR_TEMPLATE_ID'; // Reemplaza con tu Template ID
-      const publicKey = 'YOUR_PUBLIC_KEY'; // Reemplaza con tu Public Key
+      const serviceId = 'service_qoyddts'; 
+      const templateId = 'template_lhg2wkh'; // Plantilla para el negocio (recibe datos del formulario)
+      const autoReplyTemplateId = 'template_7bnxxyb'; // Plantilla de auto-reply al cliente (confirmación)
+      const publicKey = '1tVQiok8wtWU2bQFh';
 
+      // 1. Email al negocio con los datos del formulario
       const templateParams = {
         from_name: `${formData.firstName} ${formData.lastName}`,
         from_email: formData.email,
@@ -159,9 +158,31 @@ function App() {
         to_email: 'Tenorioairconditioning24@gmail.com'
       };
 
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      console.log('Enviando email al negocio con parámetros:', templateParams);
 
-      setFormStatus({ type: 'success', message: '¡Mensaje enviado exitosamente! Nos pondremos en contacto contigo pronto.' });
+      const response = await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      
+      console.log('Email al negocio enviado exitosamente:', response);
+
+     
+      const autoReplyParams = {
+        to_name: formData.firstName,
+        to_email: formData.email,
+        customer_name: `${formData.firstName} ${formData.lastName}`
+      };
+
+      console.log('Enviando email de confirmación al cliente:', autoReplyParams);
+
+      
+      try {
+        await emailjs.send(serviceId, autoReplyTemplateId, autoReplyParams, publicKey);
+        console.log('Email de confirmación al cliente enviado exitosamente');
+      } catch (autoReplyError) {
+        console.warn('Error al enviar auto-reply (no crítico):', autoReplyError);
+        
+      }
+
+      setFormStatus({ type: 'success', message: 'Message sent successfully! We will contact you soon.' });
       setFormData({
         firstName: '',
         lastName: '',
@@ -170,8 +191,22 @@ function App() {
         message: ''
       });
     } catch (error) {
-      console.error('Error sending email:', error);
-      setFormStatus({ type: 'error', message: 'Hubo un error al enviar el mensaje. Por favor intenta de nuevo o llámanos al (480) 612-7134' });
+      console.error('Error completo:', error);
+      console.error('Código de error:', error?.status);
+      console.error('Texto del error:', error?.text);
+      
+      
+      let errorMessage = 'Hubo un error al enviar el mensaje. Por favor intenta de nuevo o llámanos al (480) 612-7134';
+      
+      if (error?.status === 422) {
+        errorMessage = 'Error de configuración: Verifica que los nombres de las variables en tu plantilla de EmailJS coincidan con: from_name, from_email, phone, message, to_email';
+      } else if (error?.status === 400) {
+        errorMessage = 'Error en los datos: Verifica que todos los campos estén completos correctamente';
+      } else if (error?.status === 401 || error?.status === 403) {
+        errorMessage = 'Error de autenticación: Verifica tus credenciales de EmailJS (Service ID, Template ID, Public Key)';
+      }
+      
+      setFormStatus({ type: 'error', message: errorMessage });
     } finally {
       setIsSubmitting(false);
     }
@@ -512,7 +547,7 @@ function App() {
                 alt="Daikin" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
-              {/* Segunda serie de logos (duplicados para efecto infinito) */}
+              {/* Segunda serie de logos */}
               <img 
                 src="/img/logobrands/Goodman_Global_logo_svg.avif" 
                 alt="Goodman" 
