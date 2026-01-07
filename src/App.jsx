@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
-import { Phone, Clock, Wrench, Hammer, ArrowUpCircle, AlertCircle, Wind, Tag, HardHat, ClipboardCheck, ChevronLeft, ChevronRight, Facebook, Instagram, Mail, MapPin } from 'lucide-react';
+import { Phone, Clock, Wrench, Hammer, ArrowUpCircle, AlertCircle, Wind, Tag, HardHat, ClipboardCheck, ChevronLeft, ChevronRight, Facebook, Instagram, Mail, MapPin, X } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 const heroImages = ['/img/1.jpeg', '/img/2.jpeg', '/img/4.jpeg'];
 const carouselImages = ['/img/1.jpeg', '/img/2.jpeg', '/img/3.jpeg', '/img/4.jpeg', '/img/5.jpeg', '/img/6.jpeg', '/img/7.jpeg', '/img/8.jpeg'];
@@ -10,6 +11,17 @@ function App() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [formStatus, setFormStatus] = useState({ type: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageIndex, setModalImageIndex] = useState(0);
 
   const snowflakes = useMemo(() => {
     // Use deterministic pseudo-random values based on index
@@ -57,6 +69,37 @@ function App() {
     setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
   };
 
+  const openModal = (index) => {
+    setModalImageIndex(index);
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden'; // Prevenir scroll del body cuando el modal está abierto
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'unset'; // Restaurar scroll del body
+  };
+
+  const nextModalImage = () => {
+    setModalImageIndex((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const prevModalImage = () => {
+    setModalImageIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
+
+  // Cerrar modal con tecla ESC
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isModalOpen]);
+
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
@@ -69,6 +112,68 @@ function App() {
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy phone number:', err);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setFormStatus({ type: '', message: '' });
+
+    // Validación básica
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.message) {
+      setFormStatus({ type: 'error', message: 'Por favor completa todos los campos' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Validación de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setFormStatus({ type: 'error', message: 'Por favor ingresa un email válido' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // Configuración de EmailJS
+      // IMPORTANTE: Necesitas reemplazar estos valores con tus credenciales de EmailJS
+      // Puedes obtenerlas en https://www.emailjs.com/
+      const serviceId = 'YOUR_SERVICE_ID'; // Reemplaza con tu Service ID
+      const templateId = 'YOUR_TEMPLATE_ID'; // Reemplaza con tu Template ID
+      const publicKey = 'YOUR_PUBLIC_KEY'; // Reemplaza con tu Public Key
+
+      const templateParams = {
+        from_name: `${formData.firstName} ${formData.lastName}`,
+        from_email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        to_email: 'Tenorioairconditioning24@gmail.com'
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      setFormStatus({ type: 'success', message: '¡Mensaje enviado exitosamente! Nos pondremos en contacto contigo pronto.' });
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setFormStatus({ type: 'error', message: 'Hubo un error al enviar el mensaje. Por favor intenta de nuevo o llámanos al (480) 612-7134' });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -147,14 +252,44 @@ function App() {
         </div>
         
         <div className="flex items-center gap-[10%] w-[30%] justify-end">
-          <div className="hidden md:flex gap-8 font-black text-lg tracking-wide uppercase">
-            <a href="#inicio" className="transition hover:scale-105 font-extrabold" style={{ color: '#343A40' }} onMouseEnter={(e) => e.target.style.color = '#0056b3'} onMouseLeave={(e) => e.target.style.color = '#343A40'}>{t('nav_home')}</a>
+          <div className="hidden md:flex gap-12 font-black text-lg tracking-wide uppercase">
+            <a 
+              href="#inicio" 
+              className="px-6 py-3 rounded-lg border-2 transition hover:scale-105 font-bold text-white"
+              style={{ 
+                backgroundColor: '#0056b3',
+                borderColor: '#0056b3',
+                fontFamily: 'Arial, sans-serif',
+                letterSpacing: '0.05em'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#004a99';
+                e.target.style.borderColor = '#004a99';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#0056b3';
+                e.target.style.borderColor = '#0056b3';
+              }}
+            >
+              {t('nav_home')}
+            </a>
             <a 
               href="#servicios" 
-              className="transition hover:scale-105 font-extrabold" 
-              style={{ color: '#343A40' }} 
-              onMouseEnter={(e) => e.target.style.color = '#0056b3'} 
-              onMouseLeave={(e) => e.target.style.color = '#343A40'}
+              className="px-6 py-3 rounded-lg border-2 transition hover:scale-105 font-bold text-white"
+              style={{ 
+                backgroundColor: '#0056b3',
+                borderColor: '#0056b3',
+                fontFamily: 'Arial, sans-serif',
+                letterSpacing: '0.05em'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#004a99';
+                e.target.style.borderColor = '#004a99';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#0056b3';
+                e.target.style.borderColor = '#0056b3';
+              }}
               onClick={(e) => {
                 e.preventDefault();
                 const element = document.getElementById('servicios');
@@ -338,6 +473,81 @@ function App() {
         </div>
       </section>
 
+      {/* BRANDS SECTION */}
+      <section className="py-16 px-8" style={{ backgroundColor: '#FFFFFF' }}>
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl md:text-6xl font-black text-center mb-12 italic transform skew-x-[-12deg]" style={{ color: '#343A40' }}>
+            Free Quotes Any Brand
+          </h1>
+          <div className="overflow-hidden relative w-full">
+            <div className="flex items-center gap-8 md:gap-12 lg:gap-16 brands-carousel whitespace-nowrap">
+              {/* Primera serie de logos */}
+              <img 
+                src="/img/logobrands/Goodman_Global_logo_svg.avif" 
+                alt="Goodman" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/york.avif" 
+                alt="York" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/carrier.avif" 
+                alt="Carrier" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/trane.avif" 
+                alt="Trane" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/bosch.avif" 
+                alt="Bosch" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/daikin-logo.avif" 
+                alt="Daikin" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              {/* Segunda serie de logos (duplicados para efecto infinito) */}
+              <img 
+                src="/img/logobrands/Goodman_Global_logo_svg.avif" 
+                alt="Goodman" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/york.avif" 
+                alt="York" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/carrier.avif" 
+                alt="Carrier" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/trane.avif" 
+                alt="Trane" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/bosch.avif" 
+                alt="Bosch" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+              <img 
+                src="/img/logobrands/daikin-logo.avif" 
+                alt="Daikin" 
+                className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 4. SECCIÓN DE CITAS */}
       <section id="citas" className="py-24 px-8" style={{ backgroundColor: '#F8F9FA' }}>
         <div className="max-w-7xl mx-auto">
@@ -345,8 +555,120 @@ function App() {
             {/* Sección de Citas - Izquierda */}
             <div className="text-center lg:text-left">
               <h2 className="text-3xl font-bold mb-6" style={{ color: '#343A40' }}>{t('nav_btn')}</h2>
-              <div className="bg-white p-8 rounded-3xl shadow-inner min-h-[400px] flex items-center justify-center border-2 border-dashed border-slate-200">
-                <p className="text-slate-400 font-medium">Calendario próximamente...</p>
+              <div className="bg-white p-8 rounded-3xl shadow-lg border border-slate-200">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* First Name y Last Name */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="firstName" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
+                        First Name
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        placeholder="First Name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="lastName" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
+                        Last Name
+                      </label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        placeholder="Last Name"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Email y Phone */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        placeholder="Email"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        placeholder="Phone Number"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Message */}
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
+                      How can we help you?
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      rows="5"
+                      className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                      placeholder="Describe how we can help you..."
+                      required
+                    />
+                  </div>
+
+                  {/* Status Message */}
+                  {formStatus.message && (
+                    <div className={`p-4 rounded-lg ${
+                      formStatus.type === 'success' 
+                        ? 'bg-green-50 text-green-800 border border-green-200' 
+                        : 'bg-red-50 text-red-800 border border-red-200'
+                    }`}>
+                      <p className="text-sm font-medium">{formStatus.message}</p>
+                    </div>
+                  )}
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-4 rounded-lg font-bold text-lg uppercase tracking-wide transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
+                    style={{ backgroundColor: '#FFB800', color: '#343A40' }}
+                    onMouseEnter={(e) => {
+                      if (!isSubmitting) e.target.style.backgroundColor = '#ffc933';
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isSubmitting) e.target.style.backgroundColor = '#FFB800';
+                    }}
+                  >
+                    {isSubmitting ? 'Enviando...' : 'SUBMIT INFORMATION'}
+                  </button>
+                </form>
               </div>
             </div>
 
@@ -387,7 +709,7 @@ function App() {
               </div>
 
               {/* Contenido del Carrusel */}
-              <div className="relative w-full h-full overflow-hidden rounded-xl">
+              <div className="relative w-full h-full overflow-hidden rounded-xl cursor-pointer" onClick={() => openModal(carouselIndex)}>
                 {carouselImages.map((img, index) => (
                   <div
                     key={index}
@@ -411,6 +733,70 @@ function App() {
       <footer className="py-12 border-t border-slate-100 text-center text-slate-500 text-sm">
         <p>© 2024 Tenorio AC. {t('footer_rights')}</p>
       </footer>
+
+      {/* Modal de Imagen */}
+      {isModalOpen && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm"
+          onClick={closeModal}
+        >
+          {/* Botón Cerrar */}
+          <button
+            onClick={closeModal}
+            className="absolute top-4 right-4 z-[101] flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all duration-200 backdrop-blur-sm"
+            aria-label="Close modal"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Contenedor de la Imagen */}
+          <div 
+            className="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Botón Anterior */}
+            <button
+              onClick={prevModalImage}
+              className="absolute left-4 z-[101] flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all duration-200 backdrop-blur-sm"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+
+            {/* Imagen */}
+            <img
+              src={carouselImages[modalImageIndex]}
+              alt={`AC service image ${modalImageIndex + 1}`}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            />
+
+            {/* Botón Siguiente */}
+            <button
+              onClick={nextModalImage}
+              className="absolute right-4 z-[101] flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all duration-200 backdrop-blur-sm"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+
+            {/* Indicadores */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-[101]">
+              {carouselImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setModalImageIndex(index)}
+                  className={`h-2 rounded-full transition-all ${
+                    index === modalImageIndex
+                      ? 'w-8 bg-white'
+                      : 'w-2 bg-white/50 hover:bg-white/75'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

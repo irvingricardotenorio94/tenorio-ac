@@ -32,3 +32,20 @@ body {
   pointer-events: none;
   user-select: none;
 }
+
+/* Brands Carousel Animation */
+@keyframes scroll-brands {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.brands-carousel {
+  display: flex;
+  animation: scroll-brands 30s linear infinite;
+  will-change: transform;
+  width: max-content;
+}
