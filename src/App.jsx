@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Phone, Clock, Wrench, Hammer, ArrowUpCircle, AlertCircle, Wind, Tag, HardHat, ClipboardCheck, ChevronLeft, ChevronRight, Facebook, Instagram, Mail, MapPin, X } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
-const heroImages = ['/img/1.jpeg', '/img/2.jpeg', '/img/4.jpeg'];
-const carouselImages = ['/img/1.jpeg', '/img/2.jpeg', '/img/3.jpeg', '/img/4.jpeg', '/img/5.jpeg', '/img/6.jpeg', '/img/7.jpeg', '/img/8.jpeg'];
+const heroImages = [`${import.meta.env.BASE_URL}img/1.jpeg`, `${import.meta.env.BASE_URL}img/2.jpeg`, `${import.meta.env.BASE_URL}img/4.jpeg`];
+const carouselImages = [`${import.meta.env.BASE_URL}img/1.jpeg`, `${import.meta.env.BASE_URL}img/2.jpeg`, `${import.meta.env.BASE_URL}img/3.jpeg`, `${import.meta.env.BASE_URL}img/4.jpeg`, `${import.meta.env.BASE_URL}img/5.jpeg`, `${import.meta.env.BASE_URL}img/6.jpeg`, `${import.meta.env.BASE_URL}img/7.jpeg`, `${import.meta.env.BASE_URL}img/8.jpeg`];
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -289,7 +289,7 @@ function App() {
       {/* 1. NAVBAR */}
       <nav className="fixed top-[10vh] md:top-[10vh] w-full shadow-sm z-40 py-2 md:py-4 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 bg-white">
         <div className="flex items-center justify-center md:justify-start w-full md:w-auto md:transform md:translate-x-[10%]">
-          <img src="/img/Logo.png" alt="Tenorio AC Logo" className="h-20 md:h-32 lg:h-40 object-contain" />
+          <img src={`${import.meta.env.BASE_URL}img/Logo.png`} alt="Tenorio AC Logo" className="h-20 md:h-32 lg:h-40 object-contain" />
         </div>
         
         <div className="flex flex-col md:flex-row items-center gap-3 md:gap-[10%] w-full md:w-[30%] md:justify-end">
@@ -529,63 +529,63 @@ function App() {
             <div className="flex items-center gap-8 md:gap-12 lg:gap-16 brands-carousel whitespace-nowrap">
               {/* Primera serie de logos */}
               <img 
-                src="/img/logobrands/Goodman_Global_logo_svg.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/Goodman_Global_logo_svg.avif`} 
                 alt="Goodman" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/york.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/york.avif`} 
                 alt="York" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/carrier.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/carrier.avif`} 
                 alt="Carrier" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/trane.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/trane.avif`} 
                 alt="Trane" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/bosch.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/bosch.avif`} 
                 alt="Bosch" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/daikin-logo.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/daikin-logo.avif`} 
                 alt="Daikin" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               {/* Segunda serie de logos */}
               <img 
-                src="/img/logobrands/Goodman_Global_logo_svg.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/Goodman_Global_logo_svg.avif`} 
                 alt="Goodman" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/york.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/york.avif`} 
                 alt="York" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/carrier.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/carrier.avif`} 
                 alt="Carrier" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/trane.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/trane.avif`} 
                 alt="Trane" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/bosch.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/bosch.avif`} 
                 alt="Bosch" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
               <img 
-                src="/img/logobrands/daikin-logo.avif" 
+                src={`${import.meta.env.BASE_URL}img/logobrands/daikin-logo.avif`} 
                 alt="Daikin" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
               />
