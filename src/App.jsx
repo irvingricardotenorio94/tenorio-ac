@@ -215,7 +215,7 @@ function App() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F8F9FA' }}>
       {/* TOP BAR - We're Open 24/7 & Phone */}
-      <div className="fixed top-0 w-full h-[10vh] text-white z-50 shadow-md overflow-hidden" style={{ background: 'linear-gradient(to right, #0056b3, #0056b3)' }}>
+      <div className="fixed top-0 w-full min-h-[10vh] md:h-[10vh] text-white z-50 shadow-md overflow-hidden" style={{ background: 'linear-gradient(to right, #0056b3, #0056b3)' }}>
         {/* Snowflakes Animation - White */}
         <div className="absolute inset-0 pointer-events-none z-0">
           {topBarSnowflakes.map((flake) => (
@@ -236,57 +236,64 @@ function App() {
           ))}
         </div>
         
-        <div className="relative z-10 px-8 h-full flex justify-between items-center">
-          <div className="flex items-center gap-6 font-bold text-2xl md:text-4xl italic transform translate-x-[5%]">
-            <Clock className="w-8 h-8 md:w-10 md:h-10" />
-            <span className="transform skew-x-[-12deg]">We're Open 24/7!</span>
+        <div className="relative z-10 px-4 md:px-8 py-2 md:py-0 h-full flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
+          {/* Primera fila en móvil: We're Open y Location */}
+          <div className="flex items-center gap-2 md:gap-6 font-bold text-lg md:text-2xl lg:text-4xl italic md:transform md:translate-x-[5%]">
+            <Clock className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex-shrink-0" />
+            <span className="transform skew-x-[-12deg] whitespace-nowrap">We're Open 24/7!</span>
             {/* Location - Next to We're Open */}
-            <div className="flex items-center gap-2 font-semibold text-xs md:text-sm whitespace-nowrap ml-4">
-              <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+            <div className="flex items-center gap-1 md:gap-2 font-semibold text-xs md:text-sm whitespace-nowrap ml-2 md:ml-4">
+              <MapPin className="w-3 h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 flex-shrink-0" />
               <span className="hidden lg:inline">SERVING MESA, AZ & SURROUNDING AREAS</span>
               <span className="hidden md:inline lg:hidden">MESA, AZ & AREAS</span>
               <span className="md:hidden">MESA, AZ</span>
             </div>
           </div>
           
-          {/* Social Media Icons - Right of center */}
-          <div className="absolute left-1/2 flex items-center gap-3" style={{ transform: 'translateX(calc(-50% + 35%))' }}>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
-              <Facebook className="w-5 h-5 md:w-6 md:h-6" />
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
-              <svg className="w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-              </svg>
-            </a>
-            <a href="mailto:info@tenorioac.com" className="hover:scale-110 transition">
-              <Mail className="w-5 h-5 md:w-6 md:h-6" />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
-              <Instagram className="w-5 h-5 md:w-6 md:h-6" />
-            </a>
+          {/* Segunda fila en móvil: Social Media Icons y Phone Button */}
+          <div className="flex items-center justify-center gap-4 md:gap-3 w-full md:w-auto">
+            {/* Social Media Icons */}
+            <div className="flex items-center gap-2 md:gap-3 md:absolute md:left-1/2" style={{ transform: 'translateX(0)' }}>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
+                <Facebook className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
+                <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
+              </a>
+              <a href="mailto:info@tenorioac.com" className="hover:scale-110 transition">
+                <Mail className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
+                <Instagram className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+              </a>
+            </div>
+            
+            {/* Phone Button */}
+            <button
+              onClick={copyPhoneNumber}
+              className="flex items-center gap-2 md:gap-3 font-bold text-sm md:text-xl lg:text-2xl xl:text-4xl italic px-3 md:px-6 py-2 md:py-3 rounded-full bg-red-600 hover:bg-red-700 transition transform hover:scale-105 shadow-lg whitespace-nowrap"
+            >
+              <Phone className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 flex-shrink-0" />
+              <span className="hidden sm:inline">Call Us: </span>
+              <span>(480) 612-7134</span>
+              {copied && (
+                <span className="text-xs md:text-sm font-normal ml-1 md:ml-2 animate-pulse">✓ Copied!</span>
+              )}
+            </button>
           </div>
-          
-          <button
-            onClick={copyPhoneNumber}
-            className="flex items-center gap-3 font-bold text-2xl md:text-4xl italic px-6 py-3 rounded-full bg-red-600 hover:bg-red-700 transition transform hover:scale-105 shadow-lg"
-          >
-            <Phone className="w-6 h-6 md:w-8 md:h-8" />
-            <span>Call Us: (480) 612-7134</span>
-            {copied && (
-              <span className="text-sm font-normal ml-2 animate-pulse">✓ Copied!</span>
-            )}
-          </button>
         </div>
       </div>
 
       {/* 1. NAVBAR */}
-      <nav className="fixed top-[10vh] w-full shadow-sm z-40 py-4 px-8 flex justify-between items-center bg-white">
-        <div className="flex items-center transform translate-x-[10%]">
-          <img src="/img/Logo.png" alt="Tenorio AC Logo" className="h-32 md:h-40 object-contain" />
+      <nav className="fixed top-[10vh] md:top-[10vh] w-full shadow-sm z-40 py-2 md:py-4 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 bg-white">
+        <div className="flex items-center justify-center md:justify-start w-full md:w-auto md:transform md:translate-x-[10%]">
+          <img src="/img/Logo.png" alt="Tenorio AC Logo" className="h-20 md:h-32 lg:h-40 object-contain" />
         </div>
         
-        <div className="flex items-center gap-[10%] w-[30%] justify-end">
+        <div className="flex flex-col md:flex-row items-center gap-3 md:gap-[10%] w-full md:w-[30%] md:justify-end">
+          {/* Navigation Links - Hidden on mobile */}
           <div className="hidden md:flex gap-12 font-black text-lg tracking-wide uppercase">
             <a 
               href="#inicio" 
@@ -343,36 +350,40 @@ function App() {
             </a>
           </div>
 
-          {/* BOTONES DE IDIOMA */}
-          <div className="flex rounded-lg p-1.5" style={{ backgroundColor: 'rgba(248, 249, 250, 0.6)' }}>
-            <button 
-              onClick={() => changeLanguage('es')}
-              className={`px-4 py-2 rounded-md text-sm font-black tracking-wider transition ${i18n.language.includes('es') ? 'shadow-md scale-105' : ''}`}
-              style={i18n.language.includes('es') ? { backgroundColor: 'white', color: '#0056b3' } : { color: '#343A40' }}
-              onMouseEnter={(e) => { if (!i18n.language.includes('es')) e.target.style.color = '#0056b3' }}
-              onMouseLeave={(e) => { if (!i18n.language.includes('es')) e.target.style.color = '#343A40' }}
-            >
-              Español
-            </button>
-            <button 
-              onClick={() => changeLanguage('en')}
-              className={`px-4 py-2 rounded-md text-sm font-black tracking-wider transition ${i18n.language.includes('en') ? 'shadow-md scale-105' : ''}`}
-              style={i18n.language.includes('en') ? { backgroundColor: 'white', color: '#0056b3' } : { color: '#343A40' }}
-              onMouseEnter={(e) => { if (!i18n.language.includes('en')) e.target.style.color = '#0056b3' }}
-              onMouseLeave={(e) => { if (!i18n.language.includes('en')) e.target.style.color = '#343A40' }}
-            >
-              English
-            </button>
-          </div>
+          {/* Language buttons and Book Appointment - Stacked on mobile */}
+          <div className="flex items-center justify-center gap-3 w-full md:w-auto">
+            {/* BOTONES DE IDIOMA */}
+            <div className="flex rounded-lg p-1.5" style={{ backgroundColor: 'rgba(248, 249, 250, 0.6)' }}>
+              <button 
+                onClick={() => changeLanguage('es')}
+                className={`px-3 md:px-4 py-1.5 md:py-2 rounded-md text-xs md:text-sm font-black tracking-wider transition ${i18n.language.includes('es') ? 'shadow-md scale-105' : ''}`}
+                style={i18n.language.includes('es') ? { backgroundColor: 'white', color: '#0056b3' } : { color: '#343A40' }}
+                onMouseEnter={(e) => { if (!i18n.language.includes('es')) e.target.style.color = '#0056b3' }}
+                onMouseLeave={(e) => { if (!i18n.language.includes('es')) e.target.style.color = '#343A40' }}
+              >
+                Español
+              </button>
+              <button 
+                onClick={() => changeLanguage('en')}
+                className={`px-3 md:px-4 py-1.5 md:py-2 rounded-md text-xs md:text-sm font-black tracking-wider transition ${i18n.language.includes('en') ? 'shadow-md scale-105' : ''}`}
+                style={i18n.language.includes('en') ? { backgroundColor: 'white', color: '#0056b3' } : { color: '#343A40' }}
+                onMouseEnter={(e) => { if (!i18n.language.includes('en')) e.target.style.color = '#0056b3' }}
+                onMouseLeave={(e) => { if (!i18n.language.includes('en')) e.target.style.color = '#343A40' }}
+              >
+                English
+              </button>
+            </div>
 
-          <a href="#citas" className="px-8 py-3 rounded-full transition text-base font-black tracking-wide uppercase shadow-lg hover:shadow-xl hover:scale-105" style={{ backgroundColor: '#FFB800', color: '#343A40' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ffc933'} onMouseLeave={(e) => e.target.style.backgroundColor = '#FFB800'}>
-            {t('nav_btn')}
-          </a>
+            {/* Book Appointment Button */}
+            <a href="#citas" className="px-4 md:px-8 py-2 md:py-3 rounded-full transition text-sm md:text-base font-black tracking-wide uppercase shadow-lg hover:shadow-xl hover:scale-105 whitespace-nowrap" style={{ backgroundColor: '#FFB800', color: '#343A40' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ffc933'} onMouseLeave={(e) => e.target.style.backgroundColor = '#FFB800'}>
+              {t('nav_btn')}
+            </a>
+          </div>
         </div>
       </nav>
 
       {/* 2. HERO SECTION */}
-      <header id="inicio" className="h-screen flex flex-col justify-center items-center text-center px-4 pt-[calc(10vh+80px)] relative overflow-hidden">
+      <header id="inicio" className="h-screen flex flex-col justify-center items-center text-center px-4 pt-[calc(10vh+120px)] md:pt-[calc(10vh+80px)] relative overflow-hidden">
         {/* Background Images with Blur */}
         <div className="absolute inset-0 z-0">
           {heroImages.map((img, index) => (
