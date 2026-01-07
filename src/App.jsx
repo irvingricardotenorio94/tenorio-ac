@@ -407,17 +407,17 @@ function App() {
         
         {/* Content */}
         <div className="relative z-20">
-          <h1 className="text-6xl md:text-8xl font-black text-white mb-6 uppercase tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white mb-4 md:mb-6 uppercase tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
             {t('hero_title')} <span className="text-blue-300">{t('hero_span')}</span>
           </h1>
-          <p className="text-2xl md:text-3xl text-white max-w-3xl mb-12 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mx-auto text-center">
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white max-w-3xl mb-8 md:mb-12 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mx-auto text-center px-4">
             {t('hero_sub')}
           </p>
-          <div className="flex gap-6 justify-center">
-            <a href="#citas" className="px-10 py-5 rounded-lg text-xl font-bold shadow-2xl transition transform hover:scale-105 hover:shadow-xl" style={{ backgroundColor: '#FFB800', color: '#343A40' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ffc933'} onMouseLeave={(e) => e.target.style.backgroundColor = '#FFB800'}>
+          <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center px-4">
+            <a href="#citas" className="w-full sm:w-auto px-6 md:px-10 py-3 md:py-5 rounded-lg text-base md:text-xl font-bold shadow-2xl transition transform hover:scale-105 hover:shadow-xl text-center" style={{ backgroundColor: '#FFB800', color: '#343A40' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ffc933'} onMouseLeave={(e) => e.target.style.backgroundColor = '#FFB800'}>
               {t('btn_now')}
             </a>
-            <a href="#servicios" className="border-3 border-white text-white px-10 py-5 rounded-lg text-xl font-bold hover:bg-white/20 transition bg-white/10 backdrop-blur-sm shadow-2xl">
+            <a href="#servicios" className="w-full sm:w-auto border-3 border-white text-white px-6 md:px-10 py-3 md:py-5 rounded-lg text-base md:text-xl font-bold hover:bg-white/20 transition bg-white/10 backdrop-blur-sm shadow-2xl text-center">
               {t('btn_view')}
             </a>
           </div>
