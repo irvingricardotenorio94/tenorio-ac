@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: process.env.GITHUB_PAGES ? '/tenorio-ac/' : '/',
+  base: process.env.GITHUB_PAGES ? '/' : '/',
   plugins: [
     react(),
     tailwindcss(), 
