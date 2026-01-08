@@ -130,7 +130,7 @@ function App() {
 
     // Validación básica
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.message) {
-      setFormStatus({ type: 'error', message: 'Por favor completa todos los campos' });
+      setFormStatus({ type: 'error', message: t('form_error_complete_fields') });
       setIsSubmitting(false);
       return;
     }
@@ -138,7 +138,7 @@ function App() {
     // Validación de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setFormStatus({ type: 'error', message: 'Por favor ingresa un email válido' });
+      setFormStatus({ type: 'error', message: t('form_error_valid_email') });
       setIsSubmitting(false);
       return;
     }
@@ -182,7 +182,7 @@ function App() {
         
       }
 
-      setFormStatus({ type: 'success', message: 'Message sent successfully! We will contact you soon.' });
+      setFormStatus({ type: 'success', message: t('form_success_message') });
       setFormData({
         firstName: '',
         lastName: '',
@@ -196,14 +196,14 @@ function App() {
       console.error('Texto del error:', error?.text);
       
       
-      let errorMessage = 'Hubo un error al enviar el mensaje. Por favor intenta de nuevo o llámanos al (480) 612-7134';
+      let errorMessage = t('form_error_general');
       
       if (error?.status === 422) {
-        errorMessage = 'Error de configuración: Verifica que los nombres de las variables en tu plantilla de EmailJS coincidan con: from_name, from_email, phone, message, to_email';
+        errorMessage = t('form_error_config');
       } else if (error?.status === 400) {
-        errorMessage = 'Error en los datos: Verifica que todos los campos estén completos correctamente';
+        errorMessage = t('form_error_data');
       } else if (error?.status === 401 || error?.status === 403) {
-        errorMessage = 'Error de autenticación: Verifica tus credenciales de EmailJS (Service ID, Template ID, Public Key)';
+        errorMessage = t('form_error_auth');
       }
       
       setFormStatus({ type: 'error', message: errorMessage });
@@ -240,13 +240,13 @@ function App() {
           {/* Primera fila en móvil: We're Open y Location */}
           <div className="flex items-center gap-2 md:gap-6 font-bold text-lg md:text-2xl lg:text-4xl italic md:transform md:translate-x-[5%]">
             <Clock className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex-shrink-0" />
-            <span className="transform skew-x-[-12deg] whitespace-nowrap">We're Open 24/7!</span>
+            <span className="transform skew-x-[-12deg] whitespace-nowrap">{t('topbar_open')}</span>
             {/* Location - Next to We're Open */}
             <div className="flex items-center gap-1 md:gap-2 font-semibold text-xs md:text-sm whitespace-nowrap ml-2 md:ml-4">
               <MapPin className="w-3 h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 flex-shrink-0" />
-              <span className="hidden lg:inline">SERVING MESA, AZ & SURROUNDING AREAS</span>
-              <span className="hidden md:inline lg:hidden">MESA, AZ & AREAS</span>
-              <span className="md:hidden">MESA, AZ</span>
+              <span className="hidden lg:inline">{t('topbar_location_full')}</span>
+              <span className="hidden md:inline lg:hidden">{t('topbar_location_medium')}</span>
+              <span className="md:hidden">{t('topbar_location_small')}</span>
             </div>
           </div>
           
@@ -273,10 +273,10 @@ function App() {
               className="flex items-center gap-2 md:gap-3 font-bold text-sm md:text-xl lg:text-2xl xl:text-4xl italic px-3 md:px-6 py-2 md:py-3 rounded-full bg-red-600 hover:bg-red-700 transition transform hover:scale-105 shadow-lg whitespace-nowrap"
             >
               <Phone className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 flex-shrink-0" />
-              <span className="hidden sm:inline">Call Us: </span>
+              <span className="hidden sm:inline">{t('call_us')}</span>
               <span>(480) 612-7134</span>
               {copied && (
-                <span className="text-xs md:text-sm font-normal ml-1 md:ml-2 animate-pulse">✓ Copied!</span>
+                <span className="text-xs md:text-sm font-normal ml-1 md:ml-2 animate-pulse">{t('copied')}</span>
               )}
             </button>
           </div>
@@ -405,7 +405,7 @@ function App() {
         {/* Content */}
         <div className="relative z-20">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white mb-4 md:mb-6 uppercase tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
-            Professional AC Repair & HVAC Services in Mesa & Phoenix
+            {t('hero_h1')}
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white max-w-3xl mb-8 md:mb-12 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mx-auto text-center px-4">
             {t('hero_sub')}
@@ -616,7 +616,7 @@ function App() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
-                        First Name
+                        {t('form_first_name')}
                       </label>
                       <input
                         type="text"
@@ -625,13 +625,13 @@ function App() {
                         value={formData.firstName}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        placeholder="First Name"
+                        placeholder={t('form_first_name')}
                         required
                       />
                     </div>
                     <div>
                       <label htmlFor="lastName" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
-                        Last Name
+                        {t('form_last_name')}
                       </label>
                       <input
                         type="text"
@@ -640,7 +640,7 @@ function App() {
                         value={formData.lastName}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        placeholder="Last Name"
+                        placeholder={t('form_last_name')}
                         required
                       />
                     </div>
@@ -650,7 +650,7 @@ function App() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="email" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
-                        Email
+                        {t('form_email')}
                       </label>
                       <input
                         type="email"
@@ -659,13 +659,13 @@ function App() {
                         value={formData.email}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        placeholder="Email"
+                        placeholder={t('form_email')}
                         required
                       />
                     </div>
                     <div>
                       <label htmlFor="phone" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
-                        Phone Number
+                        {t('form_phone')}
                       </label>
                       <input
                         type="tel"
@@ -674,7 +674,7 @@ function App() {
                         value={formData.phone}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        placeholder="Phone Number"
+                        placeholder={t('form_phone')}
                         required
                       />
                     </div>
@@ -683,7 +683,7 @@ function App() {
                   {/* Message */}
                   <div>
                     <label htmlFor="message" className="block text-sm font-semibold mb-2" style={{ color: '#343A40' }}>
-                      How can we help you?
+                      {t('form_message_label')}
                     </label>
                     <textarea
                       id="message"
@@ -692,7 +692,7 @@ function App() {
                       onChange={handleInputChange}
                       rows="5"
                       className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
-                      placeholder="Describe how we can help you..."
+                      placeholder={t('form_message_placeholder')}
                       required
                     />
                   </div>
@@ -721,7 +721,7 @@ function App() {
                       if (!isSubmitting) e.target.style.backgroundColor = '#FFB800';
                     }}
                   >
-                    {isSubmitting ? 'Enviando...' : 'SUBMIT INFORMATION'}
+                    {isSubmitting ? t('form_submitting') : t('form_submit')}
                   </button>
                 </form>
               </div>
