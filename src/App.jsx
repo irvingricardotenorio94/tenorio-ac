@@ -787,7 +787,7 @@ function App() {
       </section>
 
       <footer className="py-12 border-t border-slate-100 text-center text-slate-500 text-sm">
-        <p>© 2024 Tenorio AC. {t('footer_rights')}</p>
+        <p>© {new Date().getFullYear()} Tenorio AC. {t('footer_rights')}</p>
       </footer>
 
       {/* Modal de Imagen */}
