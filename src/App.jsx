@@ -254,19 +254,16 @@ function App() {
           <div className="flex items-center justify-center gap-4 md:gap-3 w-full md:w-auto">
             {/* Social Media Icons */}
             <div className="flex items-center gap-2 md:gap-3 md:absolute md:left-1/2" style={{ transform: 'translateX(0)' }}>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
+              <a href="https://www.facebook.com/profile.php?id=61574410793520" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
                 <Facebook className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
               </a>
-              <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
+              <a href="https://www.tiktok.com/@tenorioac?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
                 <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
                 </svg>
               </a>
-              <a href="mailto:info@tenorioac.com" className="hover:scale-110 transition">
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Tenorioairconditioning24@gmail.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
                 <Mail className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
-                <Instagram className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
               </a>
             </div>
             
@@ -289,7 +286,7 @@ function App() {
       {/* 1. NAVBAR */}
       <nav className="fixed top-[10vh] md:top-[10vh] w-full shadow-sm z-40 py-2 md:py-4 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 bg-white">
         <div className="flex items-center justify-center md:justify-start w-full md:w-auto md:transform md:translate-x-[10%]">
-          <img src={`${import.meta.env.BASE_URL}img/Logo.png`} alt="Tenorio AC Logo" className="h-20 md:h-32 lg:h-40 object-contain" />
+          <img src={`${import.meta.env.BASE_URL}img/Logo.png`} alt="Tenorio Air Conditioning Logo - Professional HVAC Services Mesa Phoenix AZ" className="h-20 md:h-32 lg:h-40 object-contain" loading="eager" />
         </div>
         
         <div className="flex flex-col md:flex-row items-center gap-3 md:gap-[10%] w-full md:w-[30%] md:justify-end">
@@ -408,7 +405,7 @@ function App() {
         {/* Content */}
         <div className="relative z-20">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-black text-white mb-4 md:mb-6 uppercase tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
-            {t('hero_title')} <span className="text-blue-300">{t('hero_span')}</span>
+            Professional AC Repair & HVAC Services in Mesa & Phoenix
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white max-w-3xl mb-8 md:mb-12 font-semibold drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mx-auto text-center px-4">
             {t('hero_sub')}
@@ -522,72 +519,84 @@ function App() {
       {/* BRANDS SECTION */}
       <section className="py-16 px-8" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-black text-center mb-12 italic transform skew-x-[-12deg]" style={{ color: '#343A40' }}>
+          <h2 className="text-4xl md:text-6xl font-black text-center mb-12 italic transform skew-x-[-12deg]" style={{ color: '#343A40' }}>
             Free Quotes Any Brand
-          </h1>
+          </h2>
           <div className="overflow-hidden relative w-full">
             <div className="flex items-center gap-8 md:gap-12 lg:gap-16 brands-carousel whitespace-nowrap">
               {/* Primera serie de logos */}
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/Goodman_Global_logo_svg.avif`} 
-                alt="Goodman" 
+                alt="Goodman HVAC Brand - AC Repair Mesa Phoenix" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/york.avif`} 
-                alt="York" 
+                alt="York HVAC Brand - Air Conditioning Services Mesa Phoenix" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/carrier.avif`} 
-                alt="Carrier" 
+                alt="Carrier HVAC Brand - AC Installation Mesa Phoenix AZ" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/trane.avif`} 
-                alt="Trane" 
+                alt="Trane HVAC Brand - Professional AC Repair Mesa Phoenix" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/bosch.avif`} 
-                alt="Bosch" 
+                alt="Bosch HVAC Brand - Air Conditioning Maintenance Mesa Phoenix" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/daikin-logo.avif`} 
-                alt="Daikin" 
+                alt="Daikin HVAC Brand - HVAC Services Mesa Phoenix AZ" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               {/* Segunda serie de logos */}
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/Goodman_Global_logo_svg.avif`} 
-                alt="Goodman" 
+                alt="Goodman HVAC Brand - AC Repair Mesa Phoenix" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/york.avif`} 
-                alt="York" 
+                alt="York HVAC Brand - Air Conditioning Services Mesa Phoenix" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/carrier.avif`} 
-                alt="Carrier" 
+                alt="Carrier HVAC Brand - AC Installation Mesa Phoenix AZ" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/trane.avif`} 
-                alt="Trane" 
+                alt="Trane HVAC Brand - Professional AC Repair Mesa Phoenix" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/bosch.avif`} 
-                alt="Bosch" 
+                alt="Bosch HVAC Brand - Air Conditioning Maintenance Mesa Phoenix" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
               <img 
                 src={`${import.meta.env.BASE_URL}img/logobrands/daikin-logo.avif`} 
-                alt="Daikin" 
+                alt="Daikin HVAC Brand - HVAC Services Mesa Phoenix AZ" 
                 className="h-[43px] md:h-[58px] lg:h-[72px] shrink-0 object-contain transition-all duration-300 hover:scale-110"
+                loading="lazy"
               />
             </div>
           </div>
@@ -765,8 +774,9 @@ function App() {
                   >
                     <img
                       src={img}
-                      alt={`AC service image ${index + 1}`}
+                      alt={`Professional AC Repair and HVAC Service in Mesa Phoenix AZ - Image ${index + 1}`}
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                   </div>
                 ))}
@@ -812,8 +822,9 @@ function App() {
             {/* Imagen */}
             <img
               src={carouselImages[modalImageIndex]}
-              alt={`AC service image ${modalImageIndex + 1}`}
+              alt={`Professional AC Repair and HVAC Service in Mesa Phoenix AZ - Image ${modalImageIndex + 1}`}
               className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              loading="eager"
             />
 
             {/* Botón Siguiente */}
