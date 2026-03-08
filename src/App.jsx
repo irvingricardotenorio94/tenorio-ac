@@ -286,7 +286,7 @@ function App() {
       {/* 1. NAVBAR */}
       <nav className="fixed top-[10vh] md:top-[10vh] w-full shadow-sm z-40 py-2 md:py-4 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 bg-white">
         <div className="flex items-center justify-center md:justify-start w-full md:w-auto md:transform md:translate-x-[10%]">
-          <img src={`${import.meta.env.BASE_URL}img/Logo.png`} alt="Tenorio Air Conditioning Logo - Professional HVAC Services Mesa Phoenix AZ" className="h-20 md:h-32 lg:h-40 object-contain" loading="eager" />
+          <img src={`${import.meta.env.BASE_URL}img/TENORIO-01.png`} alt="Tenorio Air Conditioning Logo - Professional HVAC Services Mesa Phoenix AZ" className="h-30 md:h-32 lg:h-50 object-contain" loading="eager" />
         </div>
         
         <div className="flex flex-col md:flex-row items-center gap-3 md:gap-[10%] w-full md:w-[30%] md:justify-end">
