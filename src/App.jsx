@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
-import { Phone, Clock, Wrench, Hammer, ArrowUpCircle, AlertCircle, Wind, Tag, HardHat, ClipboardCheck, ChevronLeft, ChevronRight, Facebook, Instagram, Mail, MapPin, X } from 'lucide-react';
+import { Phone, Clock, Wrench, Hammer, ArrowUpCircle, AlertCircle, Wind, Tag, HardHat, ClipboardCheck, ChevronLeft, ChevronRight, Facebook, Instagram, Mail, MapPin, X, Menu } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
 const heroImages = [`${import.meta.env.BASE_URL}img/1.jpeg`, `${import.meta.env.BASE_URL}img/2.jpeg`, `${import.meta.env.BASE_URL}img/4.jpeg`];
@@ -22,6 +22,7 @@ function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImageIndex, setModalImageIndex] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const snowflakes = useMemo(() => {
     // Use deterministic pseudo-random values based on index
@@ -215,7 +216,7 @@ function App() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F8F9FA' }}>
       {/* TOP BAR - We're Open 24/7 & Phone */}
-      <div className="fixed top-0 w-full min-h-[10vh] md:h-[10vh] text-white z-50 shadow-md overflow-hidden" style={{ background: 'linear-gradient(to right, #0056b3, #0056b3)' }}>
+      <div className="fixed top-0 w-full min-h-[90px] md:h-[10vh] text-white z-50 shadow-md overflow-hidden" style={{ background: 'linear-gradient(to right, #0056b3, #0056b3)' }}>
         {/* Snowflakes Animation - White */}
         <div className="absolute inset-0 pointer-events-none z-0">
           {topBarSnowflakes.map((flake) => (
@@ -253,7 +254,7 @@ function App() {
           {/* Segunda fila en móvil: Social Media Icons y Phone Button */}
           <div className="flex items-center justify-center gap-4 md:gap-3 w-full md:w-auto">
             {/* Social Media Icons */}
-            <div className="flex items-center gap-2 md:gap-3 md:absolute md:left-1/2" style={{ transform: 'translateX(0)' }}>
+            <div className="flex items-center gap-2 md:gap-3 md:absolute md:left-1/2 md:-translate-x-1/2">
               <a href="https://www.facebook.com/profile.php?id=61574410793520" target="_blank" rel="noopener noreferrer" className="hover:scale-110 transition">
                 <Facebook className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
               </a>
@@ -284,12 +285,21 @@ function App() {
       </div>
 
       {/* 1. NAVBAR */}
-      <nav className="fixed top-[10vh] md:top-[10vh] w-full shadow-sm z-40 py-2 md:py-4 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 bg-white">
-        <div className="flex items-center justify-center md:justify-start w-full md:w-auto md:transform md:translate-x-[10%]">
+      <nav className="fixed top-[90px] md:top-[10vh] w-full shadow-sm z-40 py-2 md:py-4 px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0 bg-white relative">
+        <div className="flex items-center justify-between md:justify-start w-full md:w-auto md:transform md:translate-x-[10%]">
           <img src={`${import.meta.env.BASE_URL}img/TENORIO-01.png`} alt="Tenorio Air Conditioning Logo - Professional HVAC Services Mesa Phoenix AZ" className="h-30 md:h-32 lg:h-50 object-contain" loading="eager" />
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-slate-100 transition"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen
+              ? <X className="w-6 h-6" style={{ color: '#343A40' }} />
+              : <Menu className="w-6 h-6" style={{ color: '#343A40' }} />}
+          </button>
         </div>
         
-        <div className="flex flex-col md:flex-row items-center gap-3 md:gap-[10%] w-full md:w-[30%] md:justify-end">
+        <div className="flex flex-col md:flex-row items-center gap-3 md:gap-6 w-full md:w-auto md:justify-end">
           {/* Navigation Links - Hidden on mobile */}
           <div className="hidden md:flex gap-12 font-black text-lg tracking-wide uppercase">
             <a 
@@ -377,10 +387,42 @@ function App() {
             </a>
           </div>
         </div>
+
+        {/* Mobile Navigation Dropdown */}
+        {mobileMenuOpen && (
+          <div className="absolute top-full left-0 w-full bg-white shadow-lg border-t border-slate-100 md:hidden z-50">
+            <div className="flex flex-col py-4 px-4 gap-1">
+              <a
+                href="#inicio"
+                className="px-4 py-3 rounded-lg font-bold text-base transition hover:bg-slate-50"
+                style={{ color: '#343A40' }}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t('nav_home')}
+              </a>
+              <a
+                href="#servicios"
+                className="px-4 py-3 rounded-lg font-bold text-base transition hover:bg-slate-50"
+                style={{ color: '#343A40' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMobileMenuOpen(false);
+                  const element = document.getElementById('servicios');
+                  if (element) {
+                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({ top: elementPosition - 280, behavior: 'smooth' });
+                  }
+                }}
+              >
+                {t('nav_services')}
+              </a>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* 2. HERO SECTION */}
-      <header id="inicio" className="h-screen flex flex-col justify-center items-center text-center px-4 pt-[calc(10vh+120px)] md:pt-[calc(10vh+80px)] relative overflow-hidden">
+      <header id="inicio" className="h-screen flex flex-col justify-center items-center text-center px-4 pt-[280px] md:pt-[calc(10vh+160px)] lg:pt-[calc(10vh+240px)] relative overflow-hidden">
         {/* Background Images with Blur */}
         <div className="absolute inset-0 z-0">
           {heroImages.map((img, index) => (
@@ -422,7 +464,7 @@ function App() {
       </header>
 
       {/* 3. SERVICIOS */}
-      <section id="servicios" className="py-24 px-8 relative overflow-hidden scroll-mt-[calc(10vh+80px)]" style={{ backgroundColor: '#F8F9FA' }}>
+      <section id="servicios" className="py-24 px-4 md:px-8 relative overflow-hidden scroll-mt-[280px] md:scroll-mt-[calc(10vh+80px)]" style={{ backgroundColor: '#F8F9FA' }}>
         {/* Snowflakes Animation */}
         <div className="absolute inset-0 pointer-events-none z-0">
           {snowflakes.map((flake) => (
@@ -517,7 +559,7 @@ function App() {
       </section>
 
       {/* BRANDS SECTION */}
-      <section className="py-16 px-8" style={{ backgroundColor: '#FFFFFF' }}>
+      <section className="py-16 px-4 md:px-8" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-black text-center mb-12 italic transform skew-x-[-12deg]" style={{ color: '#343A40' }}>
             Free Quotes Any Brand
@@ -604,9 +646,9 @@ function App() {
       </section>
 
       {/* 4. SECCIÓN DE CITAS */}
-      <section id="citas" className="py-24 px-8" style={{ backgroundColor: '#F8F9FA' }}>
+      <section id="citas" className="py-24 px-4 md:px-8" style={{ backgroundColor: '#F8F9FA' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-30 lg:gap-42 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-42 items-center">
             {/* Sección de Citas - Izquierda */}
             <div className="text-center lg:text-left">
               <h2 className="text-3xl font-bold mb-6" style={{ color: '#343A40' }}>{t('nav_btn')}</h2>
