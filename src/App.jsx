@@ -237,51 +237,50 @@ function App() {
           ))}
         </div>
 
-        <div className="relative z-10 px-4 md:px-8 py-2 md:py-0 h-full flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0">
-          {/* We're Open + Location */}
+        <div className="relative z-10 px-3 sm:px-5 md:px-8 h-full flex flex-row items-center justify-between gap-2">
+          {/* Left: We're Open + Location */}
           <div
-            className="flex items-center gap-2 md:gap-6 font-bold text-lg md:text-2xl lg:text-4xl italic md:transform md:translate-x-[5%]"
+            className="flex items-center gap-1.5 sm:gap-2 md:gap-3 font-bold italic flex-shrink-0"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            <Clock className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 flex-shrink-0" style={{ color: 'var(--color-blue-light)' }} />
-            <span className="transform skew-x-[-12deg] whitespace-nowrap">{t('topbar_open')}</span>
-            <div className="flex items-center gap-1 md:gap-2 font-semibold text-xs md:text-sm whitespace-nowrap ml-2 md:ml-4" style={{ color: 'rgba(255,255,255,0.72)' }}>
-              <MapPin className="w-3 h-3 md:w-4 md:h-4 lg:w-5 lg:h-5 flex-shrink-0" />
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7 lg:w-9 lg:h-9 flex-shrink-0" style={{ color: 'var(--color-blue-light)' }} />
+            <span className="text-sm sm:text-base md:text-lg lg:text-3xl transform skew-x-[-12deg] whitespace-nowrap">{t('topbar_open')}</span>
+            <div className="hidden sm:flex items-center gap-1 font-semibold text-xs whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.72)' }}>
+              <MapPin className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
               <span className="hidden lg:inline">{t('topbar_location_full')}</span>
               <span className="hidden md:inline lg:hidden">{t('topbar_location_medium')}</span>
-              <span className="md:hidden">{t('topbar_location_small')}</span>
+              <span className="sm:inline md:hidden">{t('topbar_location_small')}</span>
             </div>
           </div>
 
-          {/* Social + Phone */}
-          <div className="flex items-center justify-center gap-4 md:gap-3 w-full md:w-auto">
-            <div className="flex items-center gap-2 md:gap-3 md:absolute md:left-1/2 md:-translate-x-1/2">
-              <a href="https://www.facebook.com/profile.php?id=61574410793520" target="_blank" rel="noopener noreferrer" className="social-icon">
-                <Facebook className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
-              </a>
-              <a href="https://www.tiktok.com/@tenorioac?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="social-icon">
-                <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                </svg>
-              </a>
-              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Tenorioairconditioning24@gmail.com" target="_blank" rel="noopener noreferrer" className="social-icon">
-                <Mail className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
-              </a>
-            </div>
-
-            <button
-              onClick={copyPhoneNumber}
-              className="phone-btn flex items-center gap-2 md:gap-3 font-bold text-sm md:text-xl lg:text-2xl xl:text-3xl italic px-3 md:px-6 py-2 md:py-3 whitespace-nowrap"
-              style={{ fontFamily: 'var(--font-heading)' }}
-            >
-              <Phone className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 flex-shrink-0" />
-              <span className="hidden sm:inline">{t('call_us')}</span>
-              <span>(480) 612-7134</span>
-              {copied && (
-                <span className="text-xs md:text-sm font-normal ml-1 md:ml-2 animate-pulse">{t('copied')}</span>
-              )}
-            </button>
+          {/* Center: Social Icons */}
+          <div className="flex flex-1 items-center justify-center gap-2 md:gap-3">
+            <a href="https://www.facebook.com/profile.php?id=61574410793520" target="_blank" rel="noopener noreferrer" className="social-icon">
+              <Facebook className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+            </a>
+            <a href="https://www.tiktok.com/@tenorioac?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" className="social-icon">
+              <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=Tenorioairconditioning24@gmail.com" target="_blank" rel="noopener noreferrer" className="social-icon">
+              <Mail className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+            </a>
           </div>
+
+          {/* Right: Phone Button */}
+          <button
+            onClick={copyPhoneNumber}
+            className="phone-btn flex items-center gap-1.5 sm:gap-2 font-bold italic px-2.5 sm:px-3 md:px-5 lg:px-6 py-1.5 md:py-2 lg:py-3 text-xs sm:text-sm md:text-base lg:text-xl xl:text-2xl whitespace-nowrap flex-shrink-0"
+            style={{ fontFamily: 'var(--font-heading)' }}
+          >
+            <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-7 lg:h-7 flex-shrink-0" />
+            <span className="hidden md:inline">{t('call_us')}</span>
+            <span>(480) 612-7134</span>
+            {copied && (
+              <span className="text-xs font-normal ml-1 animate-pulse">{t('copied')}</span>
+            )}
+          </button>
         </div>
       </div>
 
